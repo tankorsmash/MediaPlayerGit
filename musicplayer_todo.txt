@@ -1,0 +1,10 @@
+## THINGS NEEDED TO BE DONE ##
+
+- Handle all ID3 versions nicely:
+ - No more "[data][key][title]" stuff, 
+	- Use song.title, or song['title']
+	- Mean proper ID3 tag classes, none of this sloppy business
+	
+- Error handling
+	- This is a tough one, because I don't know jack about it
+	

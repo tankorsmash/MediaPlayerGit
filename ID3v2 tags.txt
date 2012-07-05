@@ -1,0 +1,75 @@
+   4.19  BUF Recommended buffer size
+
+   4.17  CNT Play counter
+   4.11  COM Comments
+   4.21  CRA Audio encryption
+   4.20  CRM Encrypted meta frame
+
+   4.6   ETC Event timing codes
+   4.13  EQU Equalization
+
+   4.16  GEO General encapsulated object
+
+   4.4   IPL Involved people list
+
+   4.22  LNK Linked information
+
+   4.5   MCI Music CD Identifier
+   4.7   MLL MPEG location lookup table
+
+   4.15  PIC Attached picture
+   4.18  POP Popularimeter
+
+   4.14  REV Reverb
+   4.12  RVA Relative volume adjustment
+
+   4.10  SLT Synchronized lyric/text
+   4.8   STC Synced tempo codes
+
+   4.2.1 TAL Album/Movie/Show title
+   4.2.1 TBP BPM (Beats Per Minute)
+   4.2.1 TCM Composer
+   4.2.1 TCO Content type
+   4.2.1 TCR Copyright message
+   4.2.1 TDA Date
+   4.2.1 TDY Playlist delay
+   4.2.1 TEN Encoded by
+   4.2.1 TFT File type
+   4.2.1 TIM Time
+   4.2.1 TKE Initial key
+   4.2.1 TLA Language(s)
+   4.2.1 TLE Length
+   4.2.1 TMT Media type
+   4.2.1 TOA Original artist(s)/performer(s)
+   4.2.1 TOF Original filename
+   4.2.1 TOL Original Lyricist(s)/text writer(s)
+   4.2.1 TOR Original release year
+   4.2.1 TOT Original album/Movie/Show title
+   4.2.1 TP1 Lead artist(s)/Lead performer(s)/Soloist(s)/Performing group
+   4.2.1 TP2 Band/Orchestra/Accompaniment
+   4.2.1 TP3 Conductor/Performer refinement
+   4.2.1 TP4 Interpreted, remixed, or otherwise modified by
+   4.2.1 TPA Part of a set
+   4.2.1 TPB Publisher
+   4.2.1 TRC ISRC (International Standard Recording Code)
+   4.2.1 TRD Recording dates
+   4.2.1 TRK Track number/Position in set
+   4.2.1 TSI Size
+   4.2.1 TSS Software/hardware and settings used for encoding
+   4.2.1 TT1 Content group description
+   4.2.1 TT2 Title/Songname/Content description
+   4.2.1 TT3 Subtitle/Description refinement
+   4.2.1 TXT Lyricist/text writer
+   4.2.2 TXX User defined text information frame
+   4.2.1 TYE Year
+
+   4.1   UFI Unique file identifier
+   4.9   ULT Unsychronized lyric/text transcription
+
+   4.3.1 WAF Official audio file webpage
+   4.3.1 WAR Official artist/performer webpage
+   4.3.1 WAS Official audio source webpage
+   4.3.1 WCM Commercial information
+   4.3.1 WCP Copyright/Legal information
+   4.3.1 WPB Publishers official webpage
+   4.3.2 WXX User defined URL link frame
