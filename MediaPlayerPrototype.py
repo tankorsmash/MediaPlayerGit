@@ -367,7 +367,7 @@ class MediaPlayerApp(wx.Frame):
         
         self.Fit()
         self.Layout()
-        
+         
     #----------------------------------------------------------------------
     def onSongActive(self, e):
         """print the song info"""
