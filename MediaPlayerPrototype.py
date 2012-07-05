@@ -365,14 +365,13 @@ class MediaPlayerApp(wx.Frame):
         self.sngLst.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onSongSelect)
         self.sngLst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.onSongActive)
         
-            
         self.Fit()
         self.Layout()
         
     #----------------------------------------------------------------------
     def onSongActive(self, e):
         """print the song info"""
-              
+              ##
         index = e.m_itemIndex
         song = self.rowData[self.sngLst.GetItemData(index)]
         print song.fp
