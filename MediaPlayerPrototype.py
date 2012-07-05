@@ -372,8 +372,7 @@ class MediaPlayerApp(wx.Frame):
     #----------------------------------------------------------------------
     def onSongActive(self, e):
         """print the song info"""
-        
-        
+              
         
         index = e.m_itemIndex
         song = self.rowData[self.sngLst.GetItemData(index)]
