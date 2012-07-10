@@ -16,12 +16,12 @@ class MediaPlayerApp(wx.Frame):
         super(MediaPlayerApp, self).__init__(id=wx.ID_ANY, *args, **kwargs) 
 
         #self.song_path = r'e:\music'
-        self.song_path = r'C:\Programming\Python\Project\MusicPlayer\10.mp3'
+        #self.song_path = r'C:\Programming\Python\Project\MusicPlayer\10.mp3'
+        self.song =  r'C:\Programming\Python\Project\MusicPlayer\10.mp3'
 
         self.sizer_main = wx.GridBagSizer()
         self.sizer_main.SetRows(3)
         self.SetSizer(self.sizer_main)
-
 
         #sets the frame's favico
         self.setFavicon()
@@ -158,7 +158,7 @@ class MediaPlayerApp(wx.Frame):
         self.btn_play.SetBackgroundColour(wx.RED)
         self.btn_sizer.Add(self.btn_play, (1, 0))
         self.Bind(wx.EVT_BUTTON,
-                  lambda e: self.media_play(self.song_path, e),
+                  lambda e: self.media_play(self.song, e),
                   self.btn_play)
 
         #pause button
@@ -367,7 +367,8 @@ class MediaPlayerApp(wx.Frame):
 
     def media_play(self, path, event=None):
         '''Plays the media, at path'''
-
+        if type(path) != str:
+            path = path.fp
         print 'load:',  path
         self.mediaPlayer.Load(path)
         self.mediaPlayer.SetInitialSize()
@@ -461,10 +462,10 @@ class MediaPlayerApp(wx.Frame):
         """print the song info"""
                 ##
         index = e.m_itemIndex
-        song = self.rowData[self.sngLst.GetItemData(index)]
-        print song.fp
-        print 'playing {}'.format(song)
-        self.media_play(song.fp)
+        self.song = self.rowData[self.sngLst.GetItemData(index)]
+        #print song.fp
+        print 'playing {}'.format(self.song)
+        self.media_play(self.song.fp)
         self.onTimer(e) 
     #----------------------------------------------------------------------
     def onSongSelect(self, e):
