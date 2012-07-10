@@ -4,8 +4,6 @@ import os, sys
 import glob, fnmatch
 
 
-
-
 #----------------------------------------------------------------------
 def findMP3s(path=None):
     """finds all MP3s below the path given and returns a list of all the
