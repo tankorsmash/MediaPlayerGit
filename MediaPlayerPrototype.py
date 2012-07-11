@@ -404,7 +404,7 @@ class MediaPlayerApp(wx.Frame):
         self.sngLst.SetColumnWidth(1, 150)
         self.sngLst.SetColumnWidth(2, 150)
 
-        #set col widths automatically
+        ##set col widths automatically
         #self.sngLst.SetColumnWidth(0, wx.LIST_AUTOSIZE_USEHEADER)
         #self.sngLst.SetColumnWidth(1, wx.LIST_AUTOSIZE_USEHEADER)
         #self.sngLst.SetColumnWidth(2, wx.LIST_AUTOSIZE_USEHEADER)
@@ -503,7 +503,7 @@ class NewTimer(wx.Timer):
 def main():
 
     ex = wx.App(redirect=False)  #redirect to wxStdOut 
-    MediaPlayerApp(None, title='TEST')
+    player = MediaPlayerApp(None, title='TEST')
     ex.MainLoop()    
 
 
