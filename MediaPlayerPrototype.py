@@ -3,9 +3,6 @@ import wx.media
 from pprint import pprint as pp2
 import datetime
 
-
-
-
 from MediaPlayerBrowserStartSupportv2 import ID3
 from MediaPlayerLibrary import findMP3s
 
