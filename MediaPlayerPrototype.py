@@ -431,19 +431,20 @@ class MediaPlayerApp(wx.Frame):
 
             songTag = ID3(song)
 
-            try:
-                title = songTag.tags['TIT2']['data']['cont']
-                album = songTag.tags['TALB']['data']['cont']
-                band = songTag.tags['TPE1']['data']['cont']
-            except (KeyError, TypeError):
-                print 'No title, album and/or band found'
-                title, album, band = 'ERROR', 'ERROR', 'ERROR'
+            #try:
+                #title = songTag.tags['TIT2']['data']['cont']
+                #album = songTag.tags['TALB']['data']['cont']
+                #band = songTag.tags['TPE1']['data']['cont']
+            #except (KeyError, TypeError) as e:
+                #print 'No title, album and/or band found'
+                #title, album, band = 'ERROR', 'ERROR', 'ERROR'
 
-            self.sngLst.InsertStringItem(i, title)
-            self.sngLst.SetStringItem(i, 1, album.decode(errors='ignore'))
-            self.sngLst.SetStringItem(i, 2, band.decode(errors='ignore'))
+            self.sngLst.InsertStringItem(i, songTag.title)
+            self.sngLst.SetStringItem(i, 1, songTag.album.decode(errors='ignore'))
+            self.sngLst.SetStringItem(i, 2, songTag.artist.decode(errors='ignore'))
             self.sngLst.SetItemData(i, songTag.id)
-
+            
+            print songTag.title, '\t', songTag.artist, '\t', songTag.album
 
             self.rowData[songTag.id] = songTag
 
@@ -470,14 +471,15 @@ class MediaPlayerApp(wx.Frame):
 
         index = e.m_itemIndex
         song = self.rowData[self.sngLst.GetItemData(index)]
-
+        print song.title, song.album, song.artist
         try:
 
             self.info_trk.SetValue(song.title)
             self.info_alb.SetValue(song.album)
-            self.info_bnd.SetValue(song.band)
-        except AttributeError:
+            self.info_bnd.SetValue(song.artist)
+        except AttributeError as e:
             pass
+            print 'song select error', e
 
 ########################################################################
 class NewTimer(wx.Timer):

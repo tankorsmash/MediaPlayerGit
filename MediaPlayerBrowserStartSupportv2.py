@@ -1,6 +1,8 @@
 from pprint import pprint as pp2
 import datetime
-import struct
+import struct, binascii
+
+from ID3_tag_list import ID3v2, ID3v3 
 
 import wx
 import wx.media
@@ -15,7 +17,7 @@ class ID3(object):
             with open(fp, 'rb') as f:
                 self.song = f.read()
         except IOError as e:
-            print e
+            print e, 'couldnt open the song'
     
     
         #sets an id
@@ -38,29 +40,52 @@ class ID3(object):
             self.tags = self.getAllFramesV3()
             self.title = self.tags['TIT2']['data']['cont']
             self.album = self.tags['TALB']['data']['cont']
-            self.band = self.tags['TPE1']['data']['cont']
+            self.artist = self.tags['TPE1']['data']['cont']
         elif self.headerVER == (2, 0):
             
             self.tags = self.getAllFramesV2()
+            self.title = self.tags['TT2']['data']['cont']
+            self.album = self.tags['TAL']['data']['cont']
+            self.artist = self.tags['TP1']['data']['cont']
             
         else:
+            print 'ERROR ON INIT'
             raise Exception('Unrecognized ID3 version')
     #----------------------------------------------------------------------
     def __str__(self):
         """prints a human readable info:
         band - title"""
-        title = self.tags['TIT2']['data']['cont']
-        band = self.tags['TPE1']['data']['cont']
         
-        return '{} - {}'.format(band, title)
+        return '{} - {}'.format(self.artist, self.title)
     
     #----------------------------------------------------------------------
     def getAllFramesV2(self):
         """gets the tags for ID3.v2.0"""
         
-        print 'OH GOD, v2'
+        #print 'OH GOD, v2'
+        #True when end of frames found
+        done = False
+        next_byte = 10 
+        all_frames = []
+        while not done:
+            frame = self.getFrameDataV2(next_byte)
+            
+            if frame != None :
+                next_byte = frame['data']['byte']
+                if '\x00' not in frame['id']:
+                    all_frames.append(frame)
+                    
+                else:
+                    done = True                
+            else:
+                'frames None, so setting done to True'
+                done = True
+                
+        all_frames_dict = {}
+        for frame in all_frames:
+            all_frames_dict[frame['id']]= frame
         
-        return 
+        return all_frames_dict
      
     #----------------------------------------------------------------------
     def getFrameDataV2(self, pos):
@@ -70,10 +95,35 @@ class ID3(object):
         frm_header = self.song[pos:pos+6]
     
         ID = struct.unpack('>3s', frm_header[:3])[0]
-        LEN = struct.unpack('>i', frm_header[3:6])[0]
-        #FLAG = struct.unpack('>cc', frm_header[8:])        
-    
-        print 'done reading v2 header'    
+        if ID not in ID3v2.keys() and ID != 'CM1':
+            print 'ID3v2 tag error', ID, '############'
+            return None
+        #LEN = struct.unpack('>i', frm_header[3:7])[0]
+        LEN = int(binascii.hexlify(frm_header[3:6]), 16)
+        #FLAG = struct.unpack('>cc', frm_header[8:])
+        
+        #content of tag
+        # if it's a text info frame
+        if ID.startswith('T'):
+            ENC = self.song[pos+6]
+            content = self.song[pos+6 +1 : pos+6 + LEN]
+        else:
+            ENC = 'Not Text tag'
+            content = self.song[pos+6 : pos+6 + LEN]
+        #last byte in tag
+        BYTE = pos + 6 + LEN
+        
+        headerInner = {  #'id': ID,
+                       'len': LEN,
+                       #'flags': FLAG,
+                       'cont': content,
+                       'enc': ENC,
+                       'byte': BYTE,}
+        headerOuter = {'id': ID,
+                       'data': headerInner}
+        
+        return headerOuter
+        #print 'done reading v2 header'    
     
     def getFrameDataV3(self, pos):
         '''gets the ID, Size and Flags for the given frame,
@@ -82,7 +132,6 @@ class ID3(object):
          returns a dict with the {ID {len,flags,content}}'''
         
         #if ID3v3
-        #if self.headerVER == (3, 0):
         try:
             #frame's header
             frm_header = self.song[pos:pos+10]
@@ -108,12 +157,9 @@ class ID3(object):
                         content = self.song[pos+11+2:pos+10+LEN].decode('UTF-16LE')
                     elif end == UTF16_BE_BOM:
                         content = self.song[pos+11+2:pos+10+LEN].decode('UTF-16BE')
-                        
                     else:
                         print 'Endianness isn\'t understood'
                         
-                    #print end[0]
-                    
                 #If it's string                
                 else:
                     content = self.song[pos+11:pos+10+LEN]
@@ -122,11 +168,9 @@ class ID3(object):
             else:
                 content = self.song[pos+10:pos+10+LEN]
                 ENC = r'N/A'
-            #print 'CONTENT:', content
             
             #ending
             BYTE =   pos + 10 + LEN
-            #print 'LAST BYTE:', BYTE
             
             headerInner = {  #'id': ID,
                            'len': LEN,
@@ -142,9 +186,6 @@ class ID3(object):
         except struct.error as e:
             print e, self.song
             
-        #elif self.headerVER == (2, 0):
-            
-            #print 'ID3v2 detected, ignoring for now'
     #----------------------------------------------------------------------
     def getAllFramesV3(self):
         """loads an mp3 and finds all ID3v3 tags and returns them in a dict"""
