@@ -27,6 +27,7 @@ And, of course, you need your linkage tables so:
   * SongId
   * ArtistId'''
 
+from collections import OrderedDict as odict
 import sqlite3 as sql
 
 #----------------------------------------------------------------------
@@ -92,6 +93,85 @@ def buildMusicDatabaseV1(name):
         createTable(conn, name, variables,)
     print '#-- done creating {} tables --#'.format(numTables)
     
+    return conn
+    
+#----------------------------------------------------------------------
+def insertData(conn, table, data, ):
+    """inserts data into the table on row"""
+    
+    cmd = r'INSERT into {tbl} VALUES ({data})'.format(tbl=table, data=data)
+    print cmd
+    
+    cur = conn.cursor()
+    res = cur.execute(cmd)
+    
+    print res
+      
+    print 'done'
+    
+    
+#----------------------------------------------------------------------
+def buildMusicDatabaseV2(name):
+    """builds the preset database this time without ID3 tags, just
+    taking straight data. Will use more complex data later because right now
+    I just need to get my head around SQL"""
+    print 'Starting to create new database:', name
+    conn = sql.connect(name)
+    
+    #table name : vars(in a dict)
+    tables = {'Song': {'SONGid': 'integer PRIMARY KEY ',
+                       'SONGname': 'nvarchar(255) NOT NULL', 
+                       'FILEpath': 'nvarchar(255)NOT NULL', 
+                       'PLAYcount': 'int NOT NULL DEFAULT 0',},
+              
+              'Album': {'ALBUMid': 'integer PRIMARY KEY ',
+                        'ALBUMname': 'nvarchar(255) NOT NULL',
+                        'ARTISTid': 'int', 
+                        'FOREIGN KEY': '(ARTISTid) REFERENCES Artist(ARTISTid)'},
+              
+              'Artist': {'ARTISTid': 'integer PRIMARY KEY ',
+                         'ARTISTname': 'nvarchar(255) NOT NULL', }
+              }
+    
+    numTables = len(tables.keys())
+    print '#-- creating {} tables --#'.format(numTables)
+    for name, variables in tables.items():
+        createTable(conn, name, variables,)
+    print '#-- done creating {} tables --#'.format(numTables)
+    #----------------------------------------------------------------------
+def buildMusicDatabaseV3(name):
+    """builds the preset database this time without ID3 tags, just
+    taking straight data. Will use more complex data later because right now
+    I just need to get my head around SQL
+    
+    In this v3, I changed the INT to INTEGER, and will make it use ordered dicts"""
+    print 'Starting to create new database:', name
+    conn = sql.connect(name)
+    
+    #table name : vars(in a dict)
+    tables = odict()
+    {'Song': {'SONGid': 'integer PRIMARY KEY ',
+                       'SONGname': 'nvarchar(255) NOT NULL', 
+                       'FILEpath': 'nvarchar(255)NOT NULL', 
+                       'PLAYcount': 'int NOT NULL DEFAULT 0',},
+              
+              'Album': {'ALBUMid': 'integer PRIMARY KEY ',
+                        'ALBUMname': 'nvarchar(255) NOT NULL',
+                        'ARTISTid': 'int', 
+                        'FOREIGN KEY': '(ARTISTid) REFERENCES Artist(ARTISTid)'},
+              
+              'Artist': {'ARTISTid': 'integer PRIMARY KEY ',
+                         'ARTISTname': 'nvarchar(255) NOT NULL', }
+              }
+    
+    numTables = len(tables.keys())
+    print '#-- creating {} tables --#'.format(numTables)
+    for name, variables in tables.items():
+        createTable(conn, name, variables,)
+    print '#-- done creating {} tables --#'.format(numTables)
+    
+
+    return conn
 if __name__ == '__main__':
     
 
@@ -99,4 +179,10 @@ if __name__ == '__main__':
     #createTable('TableName', {'FIRSTVAR': 'INT', 'SECONDVAR': 'TEXT'})
     #deleteTable('TableName')
     
-    conn = buildMusicDatabaseV1('first.db')
+    db = 'first4.db' 
+    conn = buildMusicDatabaseV2(db)
+    #conn = sql.connect(db)    
+    #insertData(conn, 'Artist', '1121, "August Burns Red"')    
+        
+    conn.commit()
+    conn.close()

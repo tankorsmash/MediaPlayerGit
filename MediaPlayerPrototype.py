@@ -438,7 +438,7 @@ class MediaPlayerApp(wx.Frame):
             #except (KeyError, TypeError) as e:
                 #print 'No title, album and/or band found'
                 #title, album, band = 'ERROR', 'ERROR', 'ERROR'
-
+ 
             self.sngLst.InsertStringItem(i, songTag.title)
             self.sngLst.SetStringItem(i, 1, songTag.album.decode(errors='ignore'))
             self.sngLst.SetStringItem(i, 2, songTag.artist.decode(errors='ignore'))
