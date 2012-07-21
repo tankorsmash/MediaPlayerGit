@@ -148,28 +148,30 @@ def buildMusicDatabaseV3(name):
     print 'Starting to create new database:', name
     conn = sql.connect(name)
     
-    #table name : vars(in a dict)
-    tables = odict()
-    {'Song': {'SONGid': 'integer PRIMARY KEY ',
-                       'SONGname': 'nvarchar(255) NOT NULL', 
-                       'FILEpath': 'nvarchar(255)NOT NULL', 
-                       'PLAYcount': 'int NOT NULL DEFAULT 0',},
+    songDict = odict([('SONGid', 'integer PRIMARY KEY '),
+                    ('SONGname', 'nvarchar(255) NOT NULL' ), 
+                    ('FILEpath', 'nvarchar(255)NOT NULL' ), 
+                    ('PLAYcount', 'int NOT NULL DEFAULT 0', )])
+    
+    albumDict=odict([('ALBUMid', 'integer PRIMARY KEY '),
+                    ('ALBUMname', 'nvarchar(255) NOT NULL'),
+                    ('ARTISTid', 'int'), 
+                    ('FOREIGN KEY', '(ARTISTid) REFERENCES Artist(ARTISTid)')])
+    
+    artistDict = odict([('ARTISTid', 'integer PRIMARY KEY '),
+                        ('ARTISTname', 'nvarchar(255) NOT NULL')])
               
-              'Album': {'ALBUMid': 'integer PRIMARY KEY ',
-                        'ALBUMname': 'nvarchar(255) NOT NULL',
-                        'ARTISTid': 'int', 
-                        'FOREIGN KEY': '(ARTISTid) REFERENCES Artist(ARTISTid)'},
-              
-              'Artist': {'ARTISTid': 'integer PRIMARY KEY ',
-                         'ARTISTname': 'nvarchar(255) NOT NULL', }
-              }
+
+    
+    tables = odict([('Song', songDict), ('Album', albumDict), ('Artist', artistDict)])
+    
     
     numTables = len(tables.keys())
     print '#-- creating {} tables --#'.format(numTables)
-    for name, variables in tables.items():
-        createTable(conn, name, variables,)
+    for tbl_name, variables in tables.items():
+        createTable(conn, tbl_name, variables,)
     print '#-- done creating {} tables --#'.format(numTables)
-    
+    print 'The database is found at:', name
 
     return conn
 if __name__ == '__main__':
@@ -179,8 +181,8 @@ if __name__ == '__main__':
     #createTable('TableName', {'FIRSTVAR': 'INT', 'SECONDVAR': 'TEXT'})
     #deleteTable('TableName')
     
-    db = 'first4.db' 
-    conn = buildMusicDatabaseV2(db)
+    db = 'MusicDatabase.db' 
+    conn = buildMusicDatabaseV3(db)
     #conn = sql.connect(db)    
     #insertData(conn, 'Artist', '1121, "August Burns Red"')    
         
