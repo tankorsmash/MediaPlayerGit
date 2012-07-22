@@ -159,7 +159,7 @@ def buildMusicDatabaseV3(name):
                     ('FOREIGN KEY', '(ARTISTid) REFERENCES Artist(ARTISTid)')])
     
     artistDict = odict([('ARTISTid', 'integer PRIMARY KEY '),
-                        ('ARTISTname', 'nvarchar(255) NOT NULL')])
+                        ('ARTISTname', 'nvarchar(255) NOT NULL UNIQUE')])
               
 
     
