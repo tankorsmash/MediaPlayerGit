@@ -1,0 +1,1 @@
+ This is my Media Player progress. Right now it's only a simple player, capable of reading a preset directory and playing the file. It uses the WMP10 backend so it's probably Windows only. 
