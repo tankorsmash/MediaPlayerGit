@@ -170,10 +170,17 @@ def buildMusicDatabaseV3(name):
     print '#-- creating {} tables --#'.format(numTables)
     for tbl_name, variables in tables.items():
         createTable(conn, tbl_name, variables,)
+        
     print '#-- done creating {} tables --#'.format(numTables)
     print 'The database is found at:', name
 
-    return conn
+
+    return conn 
+
+
+    
+        
+    
 if __name__ == '__main__':
     
 
@@ -181,7 +188,7 @@ if __name__ == '__main__':
     #createTable('TableName', {'FIRSTVAR': 'INT', 'SECONDVAR': 'TEXT'})
     #deleteTable('TableName')
     
-    db = 'MusicDatabase.db' 
+    db = 'MusicDatabase2.db' 
     conn = buildMusicDatabaseV3(db)
     #conn = sql.connect(db)    
     #insertData(conn, 'Artist', '1121, "August Burns Red"')    
