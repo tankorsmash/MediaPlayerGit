@@ -7,6 +7,23 @@ from MediaPlayerBrowserStartSupportv2 import ID3
 from MediaPlayerLibrary import findMP3s
 
 
+#----------------------------------------------------------------------
+def findSongData():
+    """finds all the file paths, and song tags, then add or loads it
+    to the database"""
+    
+    
+    #make a list of songs
+    #list_of_songs = ['C:\\Programming\\Python\\Project\\MusicPlayer\\10.mp3',
+                        #'C:\\Programming\\Python\\Project\\MusicPlayer\\1.mp3']
+    #list_of_songs = findMP3s(r'./songs')
+    
+    tags = []
+    for song in findMP3s(r"E:\Music\as i lay dying"):
+        songTag = ID3(song)    
+        tags.append(songTag)
+        
+    return tags    
 class MediaPlayerApp(wx.Frame):
 
     def __init__(self, *args, **kwargs):
@@ -23,6 +40,10 @@ class MediaPlayerApp(wx.Frame):
         #sets the frame's favico
         self.setFavicon()
 
+        #make a list of songs
+        self.list_of_songs = findSongData()
+        
+        
         #sets up the main screen
         self.initPlayer()
         self.initSongList()
@@ -420,24 +441,12 @@ class MediaPlayerApp(wx.Frame):
                             flag=wx.EXPAND)
 
 
-        #make a list of songs
-        #list_of_songs = ['C:\\Programming\\Python\\Project\\MusicPlayer\\10.mp3',
-                            #'C:\\Programming\\Python\\Project\\MusicPlayer\\1.mp3']
-        #list_of_songs = findMP3s(r'./songs')
-        list_of_songs = findMP3s(r"E:\Music\as i lay dying")
 
         self.rowData = {}
-        for i, song in enumerate(list_of_songs):
+        for i, song in enumerate(self.list_of_songs):
 
-            songTag = ID3(song)
+            songTag = song
 
-            #try:
-                #title = songTag.tags['TIT2']['data']['cont']
-                #album = songTag.tags['TALB']['data']['cont']
-                #band = songTag.tags['TPE1']['data']['cont']
-            #except (KeyError, TypeError) as e:
-                #print 'No title, album and/or band found'
-                #title, album, band = 'ERROR', 'ERROR', 'ERROR'
  
             self.sngLst.InsertStringItem(i, songTag.title)
             self.sngLst.SetStringItem(i, 1, songTag.album.decode(errors='ignore'))
