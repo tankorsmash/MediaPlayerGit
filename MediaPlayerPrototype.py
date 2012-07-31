@@ -481,6 +481,7 @@ class MediaPlayerApp(wx.Frame):
             pass
             print 'song select error', e
 
+            
 ########################################################################
 class NewTimer(wx.Timer):
     """override wx.timer"""
